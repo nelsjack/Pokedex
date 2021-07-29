@@ -1,0 +1,19 @@
+h1 {
+    display: flex;
+    margin-top: 20px;
+    justify-content: center;
+    align-items: center;
+}
+
+.poke_container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 20px;
+}
+
+.sprite {
+    max-width: 90%;
+    max-height: 120px;
+}
