@@ -16,23 +16,26 @@ const getPokemon = async id => {
 fetchPokemon();
 
 function createPokemonEl(pokemon) {
-    pokeName(pokemon);
     pokeSprite(pokemon);
+    pokeName(pokemon);
+    
 }
 
 function pokeName (pokemon) {
     const pokemonEl = document.createElement('div');
     pokemonEl.classList.add('pokemon');
-    pokemonEl.innerHTML = `${pokemon.name}`
+    const pokemonName = pokemon.name;
+    pokemonEl.innerHTML = capitalizeFirstLetter(pokemonName);
     pokeContainer.appendChild(pokemonEl);
 }
 
 function pokeSprite(pokemon) {
     const sprite = document.createElement('img');
     sprite.classList.add('sprite');
-    sprite.src = `https://pokeres.bastionbot.org/images/pokemon/${pokemon.id}.png`;
+    sprite.src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.id}.png`;
     pokeContainer.appendChild(sprite);
 }
 
-
-
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
