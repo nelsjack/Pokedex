@@ -13,7 +13,33 @@ h1 {
     margin: 20px;
 }
 
-.sprite {
-    max-width: 90%;
-    max-height: 120px;
+.pokemon {
+    display: flex;
+    flex-direction: row;
+    height: 100px;
+    width: 500px;
+    margin: 10px;
+    background-color: gray;
+}
+
+.searchbar {
+    display: flex;
+    margin-top: 20px;
+    align-items: center;
+    justify-content: center;
+}
+
+input {
+    height: 35px;
+    width: 400px;
+}
+
+#searchbutton {
+    margin-left: 5px;
+    height: 35px;
+}
+
+#viewbutton {
+    height: 35px;
+    align-self: center;
 }
