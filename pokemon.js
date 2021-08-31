@@ -3,7 +3,12 @@ const pokeContainer = document.getElementById('poke_container');
 const searchBar = document.getElementById('searchbar')
 
 const searchButton = document.getElementById('searchbutton');
+
+const body = document.querySelector('body');
+
 searchButton.addEventListener("click", handleSearch);
+
+body.addEventListener("keyup", handleEnter);
 
 function createPokemonEl(pokemon) {
     // pkmn name
@@ -49,24 +54,35 @@ function capitalizeFirstLetter(string) {
         return string.charAt(0).toUpperCase() + string.slice(1);
     }
   }
+  
+  function handleEnter(event) {
+  if (event.code === 'Enter' || event.code === 'NumpadEnter') {
+        handleSearch();
+    }
+}
 
 async function handleSearch() {
-    const input = searchBar.value;
+    let input = searchBar.value.toLowerCase();
     pokeContainer.innerHTML = '';
 
-    const getPokemonArray = await fetchPokemon(input);
-    const getTypeArray = await fetchType(input);
+    if (input != '') {
+        const getPokemonArray = await fetchPokemon(input);
+        const getTypeArray = await fetchType(input);
+        console.log(getPokemonArray)
+        console.log(getTypeArray)
 
-    if (Array.isArray(getPokemonArray) && Array.isArray(getTypeArray)) {
-        // no pokemon found
-        pokeContainer.innerHTML = 'No Pokemon Found'
-    } else {
-    const normPokemonArray = normalizePokeResponse(getPokemonArray);
-    const pokemonArray = normPokemonArray.concat(getTypeArray);
-    pokemonArray.forEach(pokemon => {
-        createPokemonEl(pokemon);
-        })
+        if (getPokemonArray.length === 0 && getTypeArray.length === 0) {
+            // no pokemon found
+            pokeContainer.innerHTML = 'No Pokemon Found'
+        } else {
+        const normPokemonArray = normalizePokeResponse(getPokemonArray);
+        const pokemonArray = normPokemonArray.concat(getTypeArray);
+        pokemonArray.forEach(pokemon => {
+            createPokemonEl(pokemon);
+            })
+        }
     }
+
 }
 
 async function fetchPokemon(input) {
@@ -76,7 +92,7 @@ async function fetchPokemon(input) {
         const response = await result.json();
         return response;
     } catch (error) {
-        return []
+        return [];
     }
 }
 

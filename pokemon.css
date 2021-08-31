@@ -3,6 +3,11 @@ h1 {
     margin-top: 20px;
     justify-content: center;
     align-items: center;
+    font-family: cursive;
+}
+
+body {
+    background-image: linear-gradient(to bottom left, blue, white) 
 }
 
 .poke_container {
