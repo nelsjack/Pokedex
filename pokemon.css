@@ -18,6 +18,30 @@ body {
     margin: 20px;
 }
 
+.pokemoncard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 600px;
+    width: 400px;
+    background-color: rgb(255, 255, 255);
+    border-style: solid;
+    border-color: rgb(237, 231, 48);
+    border-width: 10px;
+    border-radius: 5px;
+}
+
+.cardsprite {
+    height: 300px;
+    width: 300px;
+}
+
+.evolution {
+    height: 100px;
+    width: 100%;
+    background-color: saddlebrown;
+}
+
 .pokemon {
     display: flex;
     flex-direction: row;

@@ -1,15 +1,46 @@
 const pokeContainer = document.getElementById('poke_container');
-
 const searchBar = document.getElementById('searchbar')
-
 const searchButton = document.getElementById('searchbutton');
-
 const body = document.querySelector('body');
 
 searchButton.addEventListener("click", handleSearch);
-
 body.addEventListener("keyup", handleEnter);
+  
+function handleEnter(event) {
+    if (event.code === 'Enter' || event.code === 'NumpadEnter') {
+          handleSearch();
+      }
+  }
+  
+  async function handleSearch() {
+      let input = searchBar.value.toLowerCase();
+      pokeContainer.innerHTML = '';
+  
+      if (input != '') {
+          const getPokemonArray = await fetchPokemon(input);
+          const getTypeArray = await fetchType(input);
+  
+          if (getPokemonArray.length === 0 && getTypeArray.length === 0) {
+              // no pokemon found
+              pokeContainer.innerHTML = 'No Pokemon Found'
+          } else {
+          const normPokemonArray = normalizePokeResponse(getPokemonArray);
+          const pokemonArray = normPokemonArray.concat(getTypeArray);
+          pokemonArray.forEach(pokemon => {
+              createPokemonEl(pokemon);
+              })
+          }
+      }
+  
+  }
 
+  function createSprite(pokemon) {
+    const sprite = document.createElement('img');
+    sprite.classList.add('sprite');
+    sprite.src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.id}.png`;
+    return sprite;
+  }
+  
 function createPokemonEl(pokemon) {
     // pkmn name
     const pokemonName = pokemon.name;
@@ -26,11 +57,6 @@ function createPokemonEl(pokemon) {
     const nameTypeContainer = document.createElement("div");
     nameTypeContainer.append(name, type);
 
-    // sprite
-    const sprite = document.createElement('img');
-    sprite.classList.add('sprite');
-    sprite.src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.id}.png`;
-    
     //view button
     const viewButton = document.createElement('button')
     viewButton.setAttribute('id', 'viewbutton')
@@ -42,7 +68,7 @@ function createPokemonEl(pokemon) {
     pokemonEl.setAttribute('id', pokemon.id);
     pokemonEl.setAttribute('class', "pokemon")
     pokemonEl.appendChild(nameTypeContainer);
-    pokemonEl.appendChild(sprite);
+    pokemonEl.appendChild(createSprite(pokemon));
     pokemonEl.appendChild(viewButton);
 
     // pokemon container
@@ -54,36 +80,7 @@ function capitalizeFirstLetter(string) {
         return string.charAt(0).toUpperCase() + string.slice(1);
     }
   }
-  
-  function handleEnter(event) {
-  if (event.code === 'Enter' || event.code === 'NumpadEnter') {
-        handleSearch();
-    }
-}
 
-async function handleSearch() {
-    let input = searchBar.value.toLowerCase();
-    pokeContainer.innerHTML = '';
-
-    if (input != '') {
-        const getPokemonArray = await fetchPokemon(input);
-        const getTypeArray = await fetchType(input);
-        console.log(getPokemonArray)
-        console.log(getTypeArray)
-
-        if (getPokemonArray.length === 0 && getTypeArray.length === 0) {
-            // no pokemon found
-            pokeContainer.innerHTML = 'No Pokemon Found'
-        } else {
-        const normPokemonArray = normalizePokeResponse(getPokemonArray);
-        const pokemonArray = normPokemonArray.concat(getTypeArray);
-        pokemonArray.forEach(pokemon => {
-            createPokemonEl(pokemon);
-            })
-        }
-    }
-
-}
 
 async function fetchPokemon(input) {
     const url = `https://pokeapi.co/api/v2/pokemon/${input}`;
@@ -151,12 +148,23 @@ function isNumeric(num) {
 }
 
 async function handleView() {
+    const pokeId = this.parentNode.id;
+    const results = await fetchPokemon(pokeId);
+    //create div
     const pokeCard = document.createElement('div');
     pokeCard.classList.add('pokemoncard');
     pokeContainer.innerHTML = '';
     pokeContainer.appendChild(pokeCard);
-    
-    const pokeId = this.parentNode.id;
-    const pokeInfo = await fetchPokemon(pokeId);
-    console.log(pokeInfo);
+    //create pokemon image
+    const cardSprite = pokeCard.appendChild(createSprite(results));
+    cardSprite.classList.add('cardsprite')
+    //create flavor stats
+    //create evolution div
+    const evolution = document.createElement('div')
+    evolution.classList.add('evolution')
+    pokeCard.appendChild(evolution)
+
+
+    console.log(results);
 }
+
