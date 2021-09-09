@@ -6,6 +6,7 @@ const body = document.querySelector('body');
 searchButton.addEventListener("click", handleSearch);
 body.addEventListener("keyup", handleEnter);
   
+//enter key functionality
 function handleEnter(event) {
     if (event.code === 'Enter' || event.code === 'NumpadEnter') {
           handleSearch();
