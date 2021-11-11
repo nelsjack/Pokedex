@@ -3,77 +3,64 @@ const searchBar = document.getElementById('searchbar')
 const searchButton = document.getElementById('searchbutton');
 const body = document.querySelector('body');
 
-searchButton.addEventListener("click", handleSearch);
-body.addEventListener("keyup", handleEnter);
-  
-//enter key functionality
-function handleEnter(event) {
-    if (event.code === 'Enter' || event.code === 'NumpadEnter') {
-          handleSearch();
-      }
+async function handleSearch() {
+  const input = searchBar.value.toLowerCase();
+  pokeContainer.innerHTML = '';
+  if (input !== '') {
+    const getPokemonArray = await fetchPokemon(input);
+    const getTypeArray = await fetchType(input);
+    if (getPokemonArray.length === 0 && getTypeArray.length === 0) {
+    // no pokemon found
+      pokeContainer.innerHTML = 'No Pokemon Found'
+    } else {
+      const normPokemonArray = normalizePokeResponse(getPokemonArray);
+      const pokemonArray = normPokemonArray.concat(getTypeArray);
+      pokemonArray.forEach(pokemon => {
+        createPokemonEl(pokemon);
+      });
+    }
   }
-  
-  async function handleSearch() {
-      let input = searchBar.value.toLowerCase();
-      pokeContainer.innerHTML = '';
-  
-      if (input != '') {
-          const getPokemonArray = await fetchPokemon(input);
-          const getTypeArray = await fetchType(input);
-  
-          if (getPokemonArray.length === 0 && getTypeArray.length === 0) {
-              // no pokemon found
-              pokeContainer.innerHTML = 'No Pokemon Found'
-          } else {
-          const normPokemonArray = normalizePokeResponse(getPokemonArray);
-          const pokemonArray = normPokemonArray.concat(getTypeArray);
-          pokemonArray.forEach(pokemon => {
-              createPokemonEl(pokemon);
-              })
-          }
-      }
-  
-  }
+}
 
-  function createSprite(pokemon) {
-    const sprite = document.createElement('img');
-    sprite.classList.add('sprite');
-    sprite.src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.id}.png`;
-    return sprite;
-  }
-  
+function createSprite(pokemon) {
+  const sprite = document.createElement('img');
+  sprite.classList.add('sprite');
+  sprite.src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.id}.png`;
+  return sprite;
+}
+
 function createPokemonEl(pokemon) {
-    // pkmn name
-    const pokemonName = pokemon.name;
-    const name = document.createElement("p");
-    name.innerHTML = capitalizeFirstLetter(pokemonName);
+  // pkmn name
+  const pokemonName = pokemon.name;
+  const name = document.createElement("p");
+  name.innerHTML = capitalizeFirstLetter(pokemonName);
 
-    // pkmn type
-    const pokemonType = pokemon.type;
+  // pkmn type
+  const pokemonType = pokemon.type;
 
-    const type = document.createElement("p");
-    type.innerHTML = capitalizeFirstLetter(pokemonType);
-    
-    // name and type container
-    const nameTypeContainer = document.createElement("div");
-    nameTypeContainer.append(name, type);
+  const type = document.createElement("p");
+  type.innerHTML = capitalizeFirstLetter(pokemonType);
 
-    //view button
-    const viewButton = document.createElement('button')
-    viewButton.setAttribute('id', 'viewbutton')
-    viewButton.innerHTML = 'View';
-    viewButton.addEventListener("click", handleView)
+  // name and type container
+  const nameTypeContainer = document.createElement("div");
+  nameTypeContainer.append(name, type);
 
-    // pokemon element
-    const pokemonEl = document.createElement('div');
-    pokemonEl.setAttribute('id', pokemon.id);
-    pokemonEl.setAttribute('class', "pokemon")
-    pokemonEl.appendChild(nameTypeContainer);
-    pokemonEl.appendChild(createSprite(pokemon));
-    pokemonEl.appendChild(viewButton);
+  // view button
+  const viewButton = document.createElement('button')
+  viewButton.setAttribute('id', 'viewbutton')
+  viewButton.innerHTML = 'Info';
+  viewButton.addEventListener("click", handleView)
 
-    // pokemon container
-    pokeContainer.appendChild(pokemonEl);
+  // pokemon element
+  const pokemonEl = document.createElement('div');
+  pokemonEl.setAttribute('id', pokemon.id);
+  pokemonEl.setAttribute('class', 'pokemon');
+  pokemonEl.appendChild(nameTypeContainer);
+  pokemonEl.appendChild(createSprite(pokemon));
+  pokemonEl.appendChild(viewButton);
+
+  // pokemon container
+  pokeContainer.appendChild(pokemonEl);
 }
 
 function capitalizeFirstLetter(string) {
@@ -149,23 +136,37 @@ function isNumeric(num) {
 }
 
 async function handleView() {
-    const pokeId = this.parentNode.id;
-    const results = await fetchPokemon(pokeId);
-    //create div
-    const pokeCard = document.createElement('div');
-    pokeCard.classList.add('pokemoncard');
-    pokeContainer.innerHTML = '';
-    pokeContainer.appendChild(pokeCard);
-    //create pokemon image
-    const cardSprite = pokeCard.appendChild(createSprite(results));
-    cardSprite.classList.add('cardsprite')
-    //create flavor stats
-    //create evolution div
-    const evolution = document.createElement('div')
-    evolution.classList.add('evolution')
-    pokeCard.appendChild(evolution)
+  const pokeId = this.parentNode.id;
+  const results = await fetchPokemon(pokeId);
+  //create div
+  const pokeCard = document.createElement('div');
+  pokeCard.classList.add('pokemoncard');
+  pokeContainer.innerHTML = '';
+  pokeContainer.appendChild(pokeCard);
+  //create pokemon image
+  const cardSprite = pokeCard.appendChild(createSprite(results));
+  cardSprite.classList.add('cardsprite');
+  //create description
+  const description = document.createElement('div');
+  description.classList.add('description');
+  pokeCard.appendChild(description);
+  // const hp, attack, sp atk, def, ... document.createElement('li') 
+  results.stats.forEach(stat => {
+    const stats = document.createElement('p')
+    description.append(stats)
+    stats.innerHTML = `${capitalizeFirstLetter(stat.stat.name)}: ${stat.base_stat}` 
+    console.log(stat.stat.name)
+    });
 
-
-    console.log(results);
+  console.log(results);
 }
 
+// enter key functionality
+function handleEnter(event) {
+  if (event.code === 'Enter' || event.code === 'NumpadEnter') {
+    handleSearch();
+  }
+}
+
+searchButton.addEventListener('click', handleSearch);
+body.addEventListener('keyup', handleEnter);
