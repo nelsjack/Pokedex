@@ -151,14 +151,14 @@ async function handleView() {
   description.classList.add('description');
   pokeCard.appendChild(description);
   // const hp, attack, sp atk, def, ... document.createElement('li') 
+  const name = document.createElement('p')
+  name.innerHTML = `${capitalizeFirstLetter(results.name)}`
+  description.append(name);
   results.stats.forEach(stat => {
     const stats = document.createElement('p')
     description.append(stats)
     stats.innerHTML = `${capitalizeFirstLetter(stat.stat.name)}: ${stat.base_stat}` 
-    console.log(stat.stat.name)
     });
-
-  console.log(results);
 }
 
 // enter key functionality
