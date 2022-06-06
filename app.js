@@ -59,7 +59,7 @@ function createPokemonEl(pokemon) {
   pokemonEl.appendChild(createSprite(pokemon));
   pokemonEl.appendChild(viewButton);
 
-  // pokemon container
+  // append to pokemon container
   pokeContainer.appendChild(pokemonEl);
 }
 
@@ -135,13 +135,44 @@ function isNumeric(num) {
     return !isNaN(num);
 }
 
+function createBackButton() {
+  const backButton = document.createElement('button')
+  backButton.setAttribute('id', 'backbutton')
+  backButton.innerHTML = 'Back to Results';
+  pokeContainer.appendChild(backButton);
+  backButton.addEventListener("click", handleBackButton)
+}
+
+function handleBackButton() {
+  const pokemonCard = document.querySelector('.pokemoncard')
+  document.getElementById('backbutton').remove();
+  pokemonCard.remove();
+  handlePokemonElementsDisplay();
+}
+
+function handlePokemonElementsDisplay() {
+  // for each setting each pokemon element to display: none
+  const pokemonElements = pokeContainer.getElementsByClassName('pokemon');
+  const pokemonElementsArray = Array.prototype.map.call(pokemonElements, function(element) {
+    return element;
+  })
+    pokemonElementsArray.forEach(pokemon => {
+      if (pokemon.style.display !== 'none') {
+        pokemon.style.display = 'none';
+      } else {
+        pokemon.style.display = 'flex'
+      }
+    });
+}
+
 async function handleView() {
   const pokeId = this.parentNode.id;
   const results = await fetchPokemon(pokeId);
+  handlePokemonElementsDisplay();
   //create div
   const pokeCard = document.createElement('div');
   pokeCard.classList.add('pokemoncard');
-  pokeContainer.innerHTML = '';
+  // pokeContainer.innerHTML = '';
   pokeContainer.appendChild(pokeCard);
   //create pokemon image
   const cardSprite = pokeCard.appendChild(createSprite(results));
@@ -159,6 +190,7 @@ async function handleView() {
     description.append(stats)
     stats.innerHTML = `${capitalizeFirstLetter(stat.stat.name)}: ${stat.base_stat}` 
     });
+  createBackButton();
 }
 
 // enter key functionality
