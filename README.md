@@ -1,6 +1,6 @@
 # Pokédex
 
-[Demo](https://nelsjack.github.io/Pokedex/)
+[Hosted Site](https://nelsjack.github.io/Pokedex/)
 
 - Search for Pokémon using the PokéAPI
 
@@ -12,7 +12,7 @@
   <img src='https://user-images.githubusercontent.com/86625034/176014728-b54a353e-1896-4320-a5b6-d4f56915c769.png' width='50%' height='50%'>
 </p>
 
-## Potential Imporvements
+## Potential Improvements
 
 - Allow for partial matches in the search bar
 - Implement a loading message while fetching
