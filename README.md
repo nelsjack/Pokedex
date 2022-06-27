@@ -13,5 +13,6 @@
 ## Potential Imporvements
 
 - Allow for partial matches in the search bar
+- Implement a loading message while fetching
 - Add pagination for reduced load time
 - Display evolutions in the info section
