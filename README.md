@@ -2,7 +2,7 @@
 
 - Search for Pokémon using the PokéAPI
 
-- Search by name, type or id number
+- Search by name, type, or id number
 
 *This Pokédex only searches for exact matches*
 
