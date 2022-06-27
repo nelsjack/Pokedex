@@ -76,6 +76,7 @@ input {
     border-radius: 15px;
     background-color: rgb(15, 167, 141);
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    cursor: pointer;
 }
 
 #viewbutton {
@@ -88,6 +89,7 @@ input {
     border-radius: 15px;
     background-color: rgb(15, 167, 141);
     font-family: inherit;
+    cursor: pointer;
 }
 
 #backbutton {
@@ -96,4 +98,5 @@ input {
     border-radius: 15px;
     background-color: rgb(15, 167, 141);
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    cursor: pointer;
 }
