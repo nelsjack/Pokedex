@@ -1,5 +1,7 @@
 # Pokédex
 
+[Demo](https://nelsjack.github.io/Pokedex/)
+
 - Search for Pokémon using the PokéAPI
 
 - Search by name, type, or id number
