@@ -1,6 +1,6 @@
 # Pokédex
 
-[Hosted Site](https://nelsjack.github.io/Pokedex/)
+[Hosted Project](https://nelsjack.github.io/Pokedex/)
 
 - Search for Pokémon using the PokéAPI
 
