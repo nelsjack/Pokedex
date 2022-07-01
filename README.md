@@ -6,6 +6,8 @@
 
 - Search by name, type, or id number
 
+- View Pokémon's base stats
+
 *This Pokédex only searches for exact matches*
 
 <p align='center'>
